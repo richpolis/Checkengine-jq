@@ -1,0 +1,55 @@
+@import 'nib'
+
+
+box-sizing()
+	-webkit-box-sizing arguments
+	-moz-box-sizing arguments
+	box-sizing arguments
+	
+opacity(n)
+	opacity n
+	if support-for-ie
+		filter unquote('progid:DXImageTransform.Microsoft.Alpha(Opacity=' + round(n * 100) + ')')
+
+color_oscuro = #666666
+color_naranja = orange
+
+
+body 
+	font-size 16px
+	background-color white
+
+.btn
+	&.btn-inline
+		padding 1em 3em
+		font-size 1em
+
+.btn-oscuro
+	background-color color_oscuro
+	color white
+	border-radius 1em
+	
+.btn-naranja
+	background-color color_naranja
+	color white
+	border-radius 1em
+
+.descripcion-checkengine
+	font-size 1.5em
+	line-height 1em
+	color color_oscuro
+
+.text-center
+	text-align center	
+
+#imagen-inicio
+	display block
+
+#imagen-portada
+	margin 0
+	display block
+	position absolute
+	top 50%
+	left 50%
+	margin-top -140px
+	margin-left -162px
