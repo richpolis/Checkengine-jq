@@ -1,0 +1,113 @@
+@import 'nib'
+
+
+box-sizing()
+	-webkit-box-sizing arguments
+	-moz-box-sizing arguments
+	box-sizing arguments
+	
+opacity(n)
+	opacity n
+	if support-for-ie
+		filter unquote('progid:DXImageTransform.Microsoft.Alpha(Opacity=' + round(n * 100) + ')')
+
+color_oscuro = #646464
+color_gris_oscuro = #666666
+color_naranja = #FF7F00
+color_gris_claro = #bbbbbb
+
+body 
+	font-size 16px
+	background-color white
+
+input[type="text"]
+input[type="tel"]	
+input[type="email"]
+input[type="password"]
+	background-color color_gris_oscuro
+	color white
+	padding 1.5em 1em
+	border-radius 1em
+	&.flat-input
+		border-radius 0
+		margin-bottom 0px
+		&.flat-input-optional
+			background-color color_gris_claro
+
+.btn
+	&.btn-inline
+		padding 1em 3em
+		font-size 1em
+
+.btn-oscuro
+	background-color color_gris_oscuro
+	color white
+	border-radius 1em
+	
+.btn-naranja
+	background-color color_naranja
+	color white
+	border-radius 1em
+
+.clearfix
+	clear both
+		
+
+.descripcion-checkengine
+	font-size 1.5em
+	line-height 1em
+	color color_gris_oscuro
+
+.help
+	color color_gris_claro
+	& .cuadro
+		display inline-block
+		width 0px
+		height 0px
+		border 5px solid color_gris_claro
+
+.modal 
+	position absolute
+	top 100%
+	&.active
+		top 0
+
+.row
+	width 100%
+	margin-bottom 1em
+	& .col
+		display inline-block
+		vertical-align top
+	& .col-4
+		width 30%
+		float left
+	& .col-6
+		width 50%
+		float left
+	& .col-8
+		width 60%
+		float left
+	& .col-12
+		width 100% 
+
+.text-center
+	text-align center	
+
+.titulo-naranja
+	color color_naranja
+
+
+
+#imagen-inicio
+	display block
+	& img
+		max-width 250px
+
+#imagen-portada
+	margin 0
+	display block
+	position absolute
+	top 50%
+	left 50%
+	margin-top -140px
+	margin-left -162px
