@@ -1,12 +1,12 @@
-<?xml version='1.0' encoding='utf-8'?>
-<widget id="com.richpolis.cordova.checkenginemovil" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" id="com.richpolis.cordova.checkengine" version="1.0.0">
     <name>Checkengine</name>
     <description>
-        Aplicacion de busqueda de servicios para tu automovil.
+        A sample Apache Cordova application that responds to the deviceready event.
     </description>
-    <author email="richpolis@gmail.com" href="http://richpolisystems.com">
-        Ricardo Alcantara Gomez
+    <author email="dev@cordova.apache.org" href="http://cordova.io">
+        Apache Cordova Team
     </author>
-    <content src="index.html" />
-    <access origin="*" />
+    <content src="index.html"/>
+    <access origin="*"/>
 </widget>

@@ -1,64 +1,106 @@
-var app = {
-    views: {},
-    models: {},
-    routers: {},
-    utils: {},
-    adapters: {}
-};
+define([
+  // Libraries.
+  'jquery',
+  'lodash',
+  'backbone',
+  'marionette',
+
+  // Collections
+  'collections/local-storage-collection',
+
+  // models
+  'models/settings-model'
+],
+
+function($, _, Backbone, Marionette, LocalStorageCollection, settingsModel) {
+
+  'use strict';
 
 
-// Se inicializa cuando se carga en el explorador
-(function () {
+  /* ======================================================================== */
 
-    /* ---------------------------------- Local Variables ---------------------------------- */
-	var existe_db,db,trabajarOnline=false;
+  var App = new Backbone.Marionette.Application();
 
-    app.router = new app.routers.AppRouter();
-    
-    app.utils.templates.load(["PortadaView", "InicioView", "RegistroView", "VehiculoView", "LoginView",
-        "CondicionesView","ContactoView"],
-        function () {
-            app.router = new app.routers.AppRouter();
-            Backbone.history.start();
+  // Set up basic paths.
+  App.root = '/';
+
+  // Create namespaces for the core actors
+  App.models = {};
+  App.collections = {};
+  App.views = {};
+
+  // Adds any methods to be run after the app was initialized.
+  App.addInitializer(function() {
+    this.initExtensions();
+    this.initEvents();
+
+    // We need the app settings before anything else
+    settingsModel.fetch({
+      success: _.bind(this.initLeadsList, this)
+      // TODO: could abstract this app initialisation daisy-chaining into an AppModel
+    });
+  });
+
+  App.initLeadsList = function() {
+
+    // Cache a reference to the local storage list and fetch the data
+    App.collections.localStorageCollection = new LocalStorageCollection();
+    App.collections.localStorageCollection.fetch({
+      success: function() {
+        // Can't use push state on Xcode
+        Backbone.history.start({ pushState: false });
+      }
+    });
+  };
+
+  App.on('initialize:before', function() {
+    // console.log('App.initialize:before: ');
+  });
+
+  App.on('initialize:after', function(){
+    // Can't use push state on Xcode
+    // Backbone.history.start({ pushState: false });
+  });
+
+  App.initExtensions = function() {
+
+    // Override Marionette onRender and onShow events so JQM 'create' event is
+    // triggered on view's element. This ensures dynamically created is given
+    // the jQuery Mobile treatment
+    Marionette.View.prototype.onRender = Marionette.View.prototype.onShow = function() {
+      this.$el.trigger('create');
+      return this;
+    };
+  };
+
+  App.initEvents = function() {
+
+    // All links with the role attribute set to nav-main will be
+    // handled by the application's router.
+    $('a[data-role="nav-main"]').live('click', function(/*e*/) {
+      navigate($(this).attr('href'));
     });
 
-    /* --------------------------------- Event Registration -------------------------------- */
-    document.addEventListener('deviceready', function () {
-        FastClick.attach(document.body);
-        if (navigator.notification) { // Override default HTML alert with native dialog
-            window.alert = function (message) {
-                navigator.notification.alert(
-                    message,    // message
-                    null,       // callback
-                    "Checkengine", // title
-                    'OK'        // buttonName
-                );
-            };
-        }
-		
-		existe_db = window.localStorage.getItem("existe_db");
-		db = window.openDatabase("checkengine","1.0","Checkengine DB",200000);
-		if(existe_db == null){
-			crearDB();
-		}
-		
-    }, false);
+    App.vent.on('navigate', function(e) {
+      // Makes navigation easy from nested views like so:
+      // App.vent.trigger('navigate', 'url');
+      navigate(e);
+    });
 
-    /* ---------------------------------- Local Functions ---------------------------------- */
-	function crearDB(){
-		db.transaction(crearNuevaDB,successCrearDB,errorCrearDB);
-	}
-	function crearNuevaDB(){
-		// aqui se agregaria todas las sentencias SQL para la creacion de la base de datos local.
-	}
-	function successCrearDB(){
-		// quitar el letrero de la portada donde se esta diciendo al usuario lo que esta pasando.
-		window.localStorage.setItem("existe_db",1);
-		trabajarOnline = false;
-	}
-	function errorCrearDB(){
-		// enviar mensaje de que ocurrio un error al tratar de crear la base de datos local, se podra trabajar
-		// pero siempre online.
-		trabajarOnline = true;
-	}
-}());
+    function navigate(url) {
+      App.Router.navigate(url, { trigger: true });
+    }
+
+    // Close Marionette.View when it's been replaced by JQM changePage. Marionette handles
+    // removal of associated DOM structure and unbinding of events.
+    // TODO: thought live was deprecated in favour of on, but on doesn't appear to work here.
+    $('div[data-role=page], div[data-role=dialog]').live('pagehide', function (/*e, ui */) {
+        if (App.views.outgoing) {
+          App.views.outgoing.close();
+        }
+    });
+  };
+
+  return App;
+
+});

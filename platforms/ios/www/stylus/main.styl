@@ -26,13 +26,6 @@ input[type="email"]
 input[type="password"]
 	background-color color_gris_oscuro
 	color white
-	padding 1.5em 1em
-	border-radius 1em
-	&.flat-input
-		border-radius 0
-		margin-bottom 0px
-		&.flat-input-optional
-			background-color color_gris_claro
 
 .btn
 	&.btn-inline
@@ -66,12 +59,6 @@ input[type="password"]
 		height 0px
 		border 5px solid color_gris_claro
 
-.modal 
-	position absolute
-	top 100%
-	&.active
-		top 0
-
 .row
 	width 100%
 	margin-bottom 1em
@@ -96,12 +83,19 @@ input[type="password"]
 .titulo-naranja
 	color color_naranja
 
-
-
 #imagen-inicio
 	display block
 	& img
 		max-width 250px
+
+ul.lista-checkengine
+	margin 0px
+	padding 0px
+	& li.item-lista-checkengine
+		width 50%
+		float left
+		border 1px solid white
+		box-sizing border-box	
 
 #imagen-portada
 	margin 0
