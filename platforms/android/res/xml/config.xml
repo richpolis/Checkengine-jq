@@ -50,10 +50,10 @@
     </feature>
     <name>Checkengine</name>
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+        Checkengine, buscador de servicios para tu automovil.
     </description>
-    <author email="dev@cordova.apache.org" href="http://cordova.io">
-        Apache Cordova Team
+    <author email="richpolis@gmail.com" href="http://richpolissystems.com">
+        Richpolis Systems
     </author>
     <content src="index.html" />
     <access origin="*" />

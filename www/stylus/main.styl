@@ -95,7 +95,58 @@ ul.lista-checkengine
 		width 50%
 		float left
 		border 1px solid white
-		box-sizing border-box	
+		box-sizing border-box
+		&.gris-grande
+		&.gris-chico	
+		&.gris-mediano
+			background-color color_gris_oscuro
+			height 50px
+		&.gris-grande
+			width 100%
+		&.gris-mediano
+			width 40%
+		&.gris-chico
+			width 30%
+		&.opcion-chico
+		&.opcion-mediano
+			background-color none
+			height 50px
+		&.opcion-chico
+			width 30%
+		&.opcion-mediano
+			width 40%
+		& a
+			display block
+			text-align center
+			line-height 50px
+			
+
+ul.list-empresas
+	margin 0
+	padding 0
+	& .item-empresa
+		list-style none
+		border 2px solid color_gris_oscuro
+		border-radius 25px
+		padding 5px
+		margin 5px
+		& img
+			width 60px
+			height 60px
+	& a.link-item-empresa
+		display block
+		positon relative
+		text-decoration none
+		& img
+		& h2
+		& p
+			float left
+			
+.banner
+	float left
+	width 100%
+	height auto
+	text-align center
 
 #imagen-portada
 	margin 0
@@ -105,3 +156,7 @@ ul.lista-checkengine
 	left 50%
 	margin-top -140px
 	margin-left -162px
+	
+
+.background-gris-oscuro
+	background-color color_oscuro

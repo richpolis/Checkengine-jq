@@ -1,2 +1,2 @@
-/Users/richpolis/Proyectos/html/Checkengine-jq/Checkengine-jq/platforms/android/ant-build/AndroidManifest.xml : \
-/Users/richpolis/Proyectos/html/Checkengine-jq/Checkengine-jq/platforms/android/AndroidManifest.xml \
+/Users/richpolis/Proyectos/cordova/Checkengine/platforms/android/ant-build/AndroidManifest.xml : \
+/Users/richpolis/Proyectos/cordova/Checkengine/platforms/android/AndroidManifest.xml \

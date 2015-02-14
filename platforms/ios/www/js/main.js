@@ -1,61 +1,64 @@
-require([
-
-  'jquery',
-  'backbone',
-  'app',
-
-  // Main router
-  'router'
-],
-
-function($, Backbone, App, router) {
-
-  'use strict';
-
-  var deviceReadyDeferred = $.Deferred();
-  var jqmReadyDeferred = $.Deferred();
-
-  // Start up the application
-  function start() {
-    
-    console.log('Main.start:');
-
-    App.Router = router;
-    App.start();
-  }
-
-  // Phonegap device ready handler
-  function onDeviceReady(isDevice) {
-    console.log('Main.onDeviceReady: running on a device: ' + (isDevice !== false));
-    deviceReadyDeferred.resolve();
-  }
-
-  // jQuery Mobile configuration
-  $(document).on('mobileinit', function() {
-
-    console.log('Main.mobileinit:');
-
-    // TODO: would be nice to abstract this into a separate configuration file
-    $.mobile.ajaxEnabled = false;
-    $.mobile.linkBindingEnabled = false;
-    $.mobile.hashListeningEnabled = false;
-    $.mobile.pushStateEnabled = false;
-    $.mobile.defaultPageTransition = 'slide';
-  });
-
-  if (navigator.userAgent.match(/(iPad|iPhone|Android)/)) {
-    // This is running on a device so waiting for deviceready event
-    document.addEventListener('deviceready', onDeviceReady, false);
-  } else {
-    // On desktop don't have to wait for anything
-    onDeviceReady(false);
-  }
-
-  // Only proceed when PhoneGap and jqm are loaded
-  $.when(deviceReadyDeferred, jqmReadyDeferred).then(start);
-
-  // Now handlers are set up we can load jqm
-  require(['jquerymobile'], function() {
-    jqmReadyDeferred.resolve();
-  });
+require.config({
+    paths:{
+        // RequireJS plugin
+        text:'libs/require/text',
+        // RequireJS plugin
+        domReady:'libs/require/domReady',
+        // underscore library
+        underscore:'libs/underscore/underscore',
+        // Backbone.js library
+        Backbone:'libs/backbone/backbone',
+        // jQuery
+        jquery:'libs/jquery/jquery-1.8.2',
+        // jQuery Mobile framework
+        jqm:'libs/jquery.mobile/jquery.mobile-1.2.0',
+        // jQuery Mobile plugin for Backbone views navigation
+        jqmNavigator:'libs/jquery.mobile/jqmNavigator'
+    },
+    shim:{
+        Backbone:{
+            deps:['underscore', 'jquery'],
+            exports:'Backbone'
+        },
+        underscore:{
+            exports:'_'
+        },
+        jqm:{
+            deps:['jquery', 'jqmNavigator']
+        }
+    }
 });
+
+require(['domReady', 'views/HomeView', 'jqm'],
+    function (domReady, HomeView) {
+
+        // domReady is RequireJS plugin that triggers when DOM is ready
+        domReady(function () {
+
+            function onDeviceReady(desktop) {
+                // Hiding splash screen when app is loaded
+                if (desktop !== true)
+                    cordova.exec(null, null, 'SplashScreen', 'hide', []);
+
+                // Setting jQM pageContainer to #container div, this solves some jQM flickers & jumps
+                // I covered it here: http://outof.me/fixing-flickers-jumps-of-jquery-mobile-transitions-in-phonegap-apps/
+                $.mobile.pageContainer = $('#container');
+
+                // Setting default transition to slide
+                $.mobile.defaultPageTransition = 'slide';
+
+                // Pushing MainView
+                $.mobile.jqmNavigator.pushView(new HomeView());
+            }
+
+            if (navigator.userAgent.match(/(iPad|iPhone|Android)/)) {
+                // This is running on a device so waiting for deviceready event
+                document.addEventListener('deviceready', onDeviceReady, false);
+            } else {
+                // On desktop don't have to wait for anything
+                onDeviceReady(true);
+            }
+
+        });
+
+    });
